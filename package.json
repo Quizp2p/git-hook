@@ -1,0 +1,23 @@
+{
+  "name": "git-hook",
+  "version": "0.0.1",
+  "description": "git webhook",
+  "main": "index.js",
+  "dependencies": {
+    "uws": "^0.14.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "npm run ${APP:=server}",
+    "server": "node ./src/server.js",
+    "client": "node ./src/client.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YuhangGe/git-hook.git"
+  },
+  "author": "Yuhang Ge <abeyuhang@gmail.com>",
+  "license": "ISC",
+  "private": true
+}
