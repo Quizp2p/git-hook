@@ -73,13 +73,20 @@ const server = http.createServer((req, res) => {
   req.on('close', onEnd);
   req.on('end', onEnd);
   req.on('data', onData);
-  if (!req.url.startsWith('/?token=') || req.method !== 'POST') {
-    return end(404);
+  if (req.headers['x-hub-signature'] === SECRET_TOKEN) {
+    if (req.url !== '/' || req.method !== 'POST') {
+      return end(404);
+    }
+  } else {
+    if (!req.url.startsWith('/?token=') || req.method !== 'POST') {
+      return end(404);
+    }
+    let _q = url.parse(req.url, true).query;
+    if (!_q || !_q.token || _q.token !== SECRET_TOKEN) {
+      return end(401);
+    }
   }
-  let _q = url.parse(req.url, true).query;
-  if (!_q || !_q.token || _q.token !== SECRET_TOKEN) {
-    return end(401);
-  }
+
   if (['application/x-www-form-urlencoded','application/json'].indexOf(__ct) >= 0) {
     __accept = true;
   } else {
