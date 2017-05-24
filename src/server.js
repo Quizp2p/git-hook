@@ -50,15 +50,16 @@ const server = http.createServer((req, res) => {
     } catch(ex) {
       return end(500);
     }
+    let msg = JSON.stringify({
+      cmd: 'webhook',
+      data: {
+        eventName: req.headers['X-GitHub-Event'] || req.headers['x-github-event'] || null,
+        detail: data
+      }
+    });
     clients.forEach(ws => {
       try {
-        ws.send(JSON.stringify({
-          cmd: 'webhook',
-          data: {
-            eventName: req.headers['X-GitHub-Event'] || req.headers['x-github-event'],
-            detail: data
-          }
-        }));
+        ws.send(msg);
       } catch(ex) {
         // ignore
       }
