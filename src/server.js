@@ -54,8 +54,10 @@ const server = http.createServer((req, res) => {
       try {
         ws.send(JSON.stringify({
           cmd: 'webhook',
-          event: req.headers['X-GitHub-Event'] || req.headers['x-github-event'],
-          data
+          data: {
+            eventName: req.headers['X-GitHub-Event'] || req.headers['x-github-event'],
+            detail: data
+          }
         }));
       } catch(ex) {
         // ignore
