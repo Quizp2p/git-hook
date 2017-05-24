@@ -1,5 +1,5 @@
 const http = require('http');
-const WebSocketServer = require('uws').Server;
+const WebSocketServer = require('ws').Server;
 const url = require('url');
 const qs = require('querystring');
 const SECRET_TOKEN = process.env['SECRET_TOKEN'] || 'hansight-12qwaszx';
@@ -89,11 +89,15 @@ const server = http.createServer((req, res) => {
 const wsServer = new WebSocketServer({
   server
 });
-wsServer.on('connection', ws => {
-  if (ws.upgradeReq.url !== `/__ws?token=${SECRET_TOKEN}`) {
-    ws.terminate();
-    return;
+wsServer.shouldHandle = request => {
+  if (request.url !== `/__ws?token=${SECRET_TOKEN}`) {
+    return false;
+  } {
+    return true;
   }
+};
+
+wsServer.on('connection', ws => {
   let __close = false;
   function on_message(msg) {
     if (__close) return;

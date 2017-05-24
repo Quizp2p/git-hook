@@ -1,4 +1,4 @@
-const WebSocketClient = require('uws');
+const WebSocketClient = require('ws');
 const client = new WebSocketClient(
   `ws${
     process.env['SSL'] ? 's' : ''
