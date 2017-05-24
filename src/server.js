@@ -54,6 +54,7 @@ const server = http.createServer((req, res) => {
       try {
         ws.send(JSON.stringify({
           cmd: 'webhook',
+          event: req.headers['X-GitHub-Event'] || req.headers['x-github-event'],
           data
         }));
       } catch(ex) {
@@ -73,12 +74,20 @@ const server = http.createServer((req, res) => {
   req.on('close', onEnd);
   req.on('end', onEnd);
   req.on('data', onData);
+
+  if (req.method !== 'POST') {
+    res.writeHead(200);
+    res.write('Hello, Hansight!');
+    res.end();
+    return;
+  }
+
   if (req.headers['x-hub-signature'] === SECRET_TOKEN) {
-    if (req.url !== '/' || req.method !== 'POST') {
+    if (req.url !== '/') {
       return end(404);
     }
   } else {
-    if (!req.url.startsWith('/?token=') || req.method !== 'POST') {
+    if (!req.url.startsWith('/?token=')) {
       return end(404);
     }
     let _q = url.parse(req.url, true).query;
