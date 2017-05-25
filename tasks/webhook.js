@@ -25,6 +25,11 @@ async function _process(data) {
     return;
   }
 
+  if (process.env['GIT_REPOSITORY'] && repository.name !== process.env['GIT_REPOSITORY']) {
+    console.log(`${repository.name} is not ${process.env['GIT_REPOSITORY']}, ignore`);
+    return;
+  }
+
   try {
     let st = fs.statSync(path.join(TASKS_PATH, repository.name));
     if (!st.isDirectory()) {
