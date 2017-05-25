@@ -25,7 +25,8 @@ async function _process(data) {
     return;
   }
 
-  if (process.env['GIT_REPOSITORY'] && repository.name !== process.env['GIT_REPOSITORY']) {
+  let rps = process.env['GIT_REPOSITORY'] ? process.env['GIT_REPOSITORY'].split(',').map(s => s.trim()).filter(s => !!s) : null;
+  if (rps && rps.indexOf(repository.name) < 0) {
     console.log(`${repository.name} is not ${process.env['GIT_REPOSITORY']}, ignore`);
     return;
   }
