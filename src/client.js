@@ -1,13 +1,13 @@
 const WebSocketClient = require('ws');
 const client = new WebSocketClient(
   `ws${
-    process.env['SSL'] ? 's' : ''
+    process.env['WS_SSL'] ? 's' : ''
   }://${
-    process.env['HOST'] || '127.0.0.1'
+    process.env['WS_HOST'] || 'ws.cloud.hansight.design'
   }:${
-    process.env['PORT'] || 3001
+    process.env['WS_PORT'] || 80
   }/__ws?token=${
-    process.env['SECRET_TOKEN'] || 'hansight-12qwaszx'
+    process.env['WS_SECRET_TOKEN'] || 'hansight-12qwaszx'
   }`
 );
 const path = require('path');
@@ -33,6 +33,7 @@ client.on('message', msg => {
 });
 
 client.on('open', () => {
+  console.log('connected.');
   setInterval(() => {
     client.send('$ping');
   }, 45000);
