@@ -11,3 +11,4 @@
 `docker run --restart=always -v path_of_tasks:/var/git-hook/tasks -e APP=client TASKS_PATH=/var/git-hook/tasks`
 
 test from quiz plz review
+try to fix strange things
