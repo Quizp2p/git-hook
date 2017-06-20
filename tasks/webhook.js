@@ -53,6 +53,7 @@ async function _process(data) {
       return;
     }
   } catch(ex) {
+      console.log("Quiz come to here! :)")
     if (ex.message.indexOf('not exists') >= 0) {
       console.log(`[WARN] file for event ${eventName} not exists`);
     } else {
